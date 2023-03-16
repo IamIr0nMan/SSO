@@ -1,7 +1,7 @@
-import bcrypt from "bcrypt";
+const bcrypt = require("bcrypt");
 
-import HttpError from "../models/httpError";
-import User from "../models/userSchema";
+const HttpError = require("../models/httpError");
+const User = require("../models/userSchema");
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -36,4 +36,4 @@ const login = async (req, res, next) => {
   res.status(200).json({ message: "User login successful" });
 };
 
-export default login;
+module.exports = login;

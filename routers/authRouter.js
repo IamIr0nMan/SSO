@@ -1,12 +1,12 @@
-import { Router } from "express";
+const express = require("express");
 
-import register from "../controllers/registerController";
-import login from "../controllers/loginController";
-import logout from "../controllers/logoutController";
-import checkSession from "../controllers/checkSessionController";
+const register = require("../controllers/registerController");
+const login = require("../controllers/loginController");
+const logout = require("../controllers/logoutController");
+const checkSession = require("../controllers/checkSessionController");
 
 const routerFunction = (store) => {
-  const router = Router();
+  const router = express.Router();
 
   router.post("/register", register);
 
@@ -18,4 +18,4 @@ const routerFunction = (store) => {
 
   return router;
 };
-export default routerFunction;
+module.exports = routerFunction;

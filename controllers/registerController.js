@@ -1,7 +1,7 @@
-import bcrypt from "bcrypt";
+const bcrypt = require("bcrypt");
 
-import HttpError from "../models/httpError";
-import User from "../models/userSchema";
+const HttpError = require("../models/httpError");
+const User = require("../models/userSchema");
 
 const register = async (req, res, next) => {
   const { fname, lname, email, password, dob } = req.body;
@@ -51,4 +51,4 @@ const register = async (req, res, next) => {
   res.status(200).json({ message: "User registration successful" });
 };
 
-export default register;
+module.exports = register;

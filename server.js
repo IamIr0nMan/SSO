@@ -1,12 +1,13 @@
-import express from "express";
-import session from "express-session";
-import cookieParser from "cookie-parser";
-import { MongoDBStore } from "connect-mongodb-session";
-import mongoose from "mongoose";
-import * as dotenv from "dotenv";
+const express = require("express");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const MongoDBStore = require("connect-mongo");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const path = require("path");
 
-import HttpError from "./models/httpError";
-import routerFunction from "./routers/authRouter";
+const HttpError = require("./models/httpError");
+const routerFunction = require("./routers/authRouter");
 
 const app = express();
 
@@ -20,11 +21,10 @@ mongoose.connect(process.env.MONGODB_URL, {
   useCreateIndex: true,
 });
 
-const store = new MongoDBStore({
+const store = MongoDBStore.create({
   uri: process.env.MONGODB_URL,
   collection: process.env.DATABASE_NAME,
   ttl: 60 * 60 * 24 * 10,
-  autoRemove: "native",
 });
 
 store.on("error", (error) => {
@@ -44,8 +44,21 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+app.get("/", (req, res, next) => {
+  res.send("Hello from server");
+});
 
 app.use("/auth", routerFunction(store));
+
+app.get("/login", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+app.get("/register", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "public", "register.html"));
+});
 
 app.use((req, res, next) => {
   return new HttpError("Could not find this route...", 404);

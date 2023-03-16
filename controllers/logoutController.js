@@ -1,6 +1,6 @@
-import HttpError from "../models/httpError";
+const HttpError = require("../models/httpError");
 
-export default async function logout(store) {
+function logout(store) {
   return async function (req, res, next) {
     const sessionId = req.session.id;
     store.destroy(sessionId, (err) => {
@@ -20,3 +20,5 @@ export default async function logout(store) {
     res.status(200).json({ message: "User logged out successfully" });
   };
 }
+
+module.exports = logout;

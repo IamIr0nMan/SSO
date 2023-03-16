@@ -1,6 +1,6 @@
-import HttpError from "../models/httpError";
+const HttpError = require("../models/httpError");
 
-export default async function checkSession(store) {
+function checkSession(store) {
   return async function (req, res, next) {
     if (!res.session.id) {
       res.status(401).json({ message: "User has not logged in previously" });
@@ -19,3 +19,5 @@ export default async function checkSession(store) {
     }
   };
 }
+
+module.exports = checkSession;
