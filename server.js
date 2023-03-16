@@ -60,6 +60,10 @@ app.get("/register", (req, res, next) => {
   res.sendFile(path.join(__dirname, "public", "register.html"));
 });
 
+app.get("/forgotPassword", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "public", "forgotPassword.html"));
+});
+
 app.use((req, res, next) => {
   return new HttpError("Could not find this route...", 404);
 });

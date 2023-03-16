@@ -4,6 +4,7 @@ const register = require("../controllers/registerController");
 const login = require("../controllers/loginController");
 const logout = require("../controllers/logoutController");
 const checkSession = require("../controllers/checkSessionController");
+const forgotPassword = require("../controllers/forgotPasswordController");
 
 const routerFunction = (store) => {
   const router = express.Router();
@@ -15,6 +16,8 @@ const routerFunction = (store) => {
   router.get("/logout", logout(store));
 
   router.get("/checkSession", checkSession(store));
+
+  router.post("/forgotPassword", forgotPassword);
 
   return router;
 };

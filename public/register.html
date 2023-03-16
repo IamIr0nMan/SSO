@@ -31,6 +31,10 @@
         width: 50%;
         /* height: 3rem; */
       }
+      .error {
+        color: red;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -81,10 +85,10 @@
                 <input
                   type="email"
                   class="form-control"
-                  id="floatingInput"
+                  id="floatingEmail"
                   placeholder="email"
                 />
-                <label style="color: #727070" for="floatingInput"
+                <label style="color: #727070" for="floatingEmail"
                   >Email address</label
                 >
               </div>
@@ -108,16 +112,22 @@
               <div class="d-flex justify-content-between my-5">
                 <button
                   type="button"
+                  onclick="redirectToLogin()"
                   class="btn btn-link"
                   style="text-decoration: none"
                 >
                   Sign in instead
                 </button>
-                <button type="submit" class="btn btn-primary">
+                <button
+                  type="button"
+                  onclick="register()"
+                  class="btn btn-primary"
+                >
                   Create Account
                 </button>
               </div>
             </form>
+            <p class="error" id="errorMsg"></p>
           </div>
         </div>
       </div>
@@ -128,6 +138,7 @@
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
     ></script>
+    <script src="/authPagesHandler.js"></script>
     <!-- Add custom JS file link here -->
   </body>
 </html>
