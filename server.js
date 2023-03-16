@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 
 import HttpError from "./models/httpError";
+import routerFunction from "./routers/authRouter";
 
 const app = express();
 
@@ -43,6 +44,8 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/auth", routerFunction(store));
 
 app.use((req, res, next) => {
   return new HttpError("Could not find this route...", 404);
