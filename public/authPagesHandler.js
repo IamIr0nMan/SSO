@@ -1,15 +1,19 @@
-const { response } = require("express");
+function getQueryString() {
+  const queryString = location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams.get("redirectionURL");
+}
 
 function redirectToRegister() {
-  location.href = "/register";
+  location.href = `/register?redirectionURL=${getQueryString()}`;
 }
 
 function redirectToLogin() {
-  location.href = "/login";
+  location.href = `/login?redirectionURL=${getQueryString()}`;
 }
 
 function redirectToForgotPassword() {
-  location.href = "/forgotPassword";
+  location.href = `/forgotPassword?redirectionURL=${getQueryString()}`;
 }
 
 function signIn() {
@@ -30,7 +34,7 @@ function signIn() {
         errorMsg.innerText =
           "This user does not exist, redirecting to signup...";
         setTimeout(() => {
-          location.href = "/register";
+          location.href = `/register?redirectionURL=${getQueryString()}`;
         }, 3000);
       } else if (response.status == 401) {
         errorMsg.innerText = "Password is incorrect, try again...";
@@ -45,7 +49,7 @@ function signIn() {
     })
     .then((data) => {
       if (response.status == 200) {
-        location.href = data.redirectionURL;
+        location.href = getQueryString();
       }
     })
     .catch((error) => {
@@ -74,7 +78,7 @@ function register() {
         errorMsg.innerText =
           "This user already exist, redirecting to sign in page...";
         setTimeout(() => {
-          location.href = "/login";
+          location.href = `/login?redirectionURL=${getQueryString()}`;
         }, 3000);
       } else if (response.status != 200) {
         errorMsg.innerText = "There is an unexpected error, try again later...";
@@ -87,7 +91,7 @@ function register() {
     })
     .then((data) => {
       if (response.status == 200) {
-        location.href = data.redirectionURL;
+        location.href = getQueryString();
       }
     })
     .catch((error) => {
@@ -114,7 +118,7 @@ function forgotPassword() {
         errorMsg.innerText =
           "This user does not exist, redirecting to signup...";
         setTimeout(() => {
-          location.href = "/register";
+          location.href = `/register?redirectionURL=${getQueryString()}`;
         }, 3000);
       } else if (response.status == 401) {
         errorMsg.innerText = "Date of Birth is incorrect, try again...";
@@ -128,7 +132,7 @@ function forgotPassword() {
     })
     .then((data) => {
       if (response.status == 200) {
-        location.href = "/login";
+        location.href = `/login?redirectionURL=${getQueryString()}`;
       }
     })
     .catch((error) => {
