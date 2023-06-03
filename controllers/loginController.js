@@ -33,8 +33,8 @@ const login = async (req, res, next) => {
 
   const accessToken = jwt.sign(
     {
-      userId: newUser._id,
-      email: newUser.email,
+      userId: user._id,
+      email: user.email,
     },
     process.env.JWT_SIGN_SECRET_ACCESS_TOKEN,
     { expiresIn: "1d" }
@@ -42,8 +42,8 @@ const login = async (req, res, next) => {
 
   const refreshToken = jwt.sign(
     {
-      userId: newUser._id,
-      email: newUser.email,
+      userId: user._id,
+      email: user.email,
     },
     process.env.JWT_SIGN_SECRET_REFRESH_TOKEN,
     { expiresIn: "30d" }

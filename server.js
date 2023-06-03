@@ -1,56 +1,24 @@
 const express = require("express");
-const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const MongoDBStore = require("connect-mongo");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const path = require("path");
+require("dotenv").config();
 
 const HttpError = require("./models/httpError");
-const routerFunction = require("./routers/authRouter");
+const apiRouter = require("./routers/apiRouter");
+const validateToken = require("./middlewares/validateToken");
 
 const app = express();
 
-dotenv.config();
-
-const PORT = process.env.PORT || 3000;
-
-mongoose.connect(process.env.MONGODB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
-
-const store = MongoDBStore.create({
-  uri: process.env.MONGODB_URL,
-  collection: process.env.DATABASE_NAME,
-  ttl: 60 * 60 * 24 * 10,
-});
-
-store.on("error", (error) => {
-  console.log(error);
-});
+const PORT = process.env.PORT || 5000;
 
 app.use(cookieParser());
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true, httpOnly: true },
-    store: store,
-  })
-);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.get("/", (req, res, next) => {
-  res.send("Hello from server");
-});
-
-app.use("/auth", routerFunction(store));
+app.use(validateToken);
+app.use("/api", apiRouter);
 
 app.get("/login", (req, res, next) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
@@ -74,6 +42,12 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occured..." });
 });
 
-app.listen(PORT, () => {
-  console.log(`Access it on https://localhost:${PORT}/`);
-});
+mongoose
+  .connect(process.env.MONGODB_URL)
+  .then(() => {
+    console.log("connection to database established");
+    app.listen(PORT, () =>
+      console.log(`Server Started! Access it on http://localhost:${PORT}/`)
+    );
+  })
+  .catch((err) => console.log(err));

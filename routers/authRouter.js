@@ -3,22 +3,19 @@ const express = require("express");
 const register = require("../controllers/registerController");
 const login = require("../controllers/loginController");
 const logout = require("../controllers/logoutController");
-const checkSession = require("../controllers/checkSessionController");
 const forgotPassword = require("../controllers/forgotPasswordController");
+const userInfo = require("../controllers/userInfoController");
 
-const routerFunction = (store) => {
-  const router = express.Router();
+const router = express.Router();
 
-  router.post("/register", register);
+router.post("/register", register);
 
-  router.post("/login", login);
+router.post("/login", login);
 
-  router.get("/logout", logout(store));
+router.get("/logout", logout);
 
-  router.get("/checkSession", checkSession(store));
+router.get("/userInfo", userInfo);
 
-  router.post("/forgotPassword", forgotPassword);
+router.post("/forgotPassword", forgotPassword);
 
-  return router;
-};
-module.exports = routerFunction;
+module.exports = router;
